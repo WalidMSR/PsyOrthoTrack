@@ -1,0 +1,16 @@
+# Dossier des fichiers de base de données
+*.sqlite3
+
+# Fichiers de migration
+*.pyc
+*.pyo
+
+# Environnements virtuels
+venv/
+
+# Fichiers de configuration
+*.log
+
+# Fichiers de l'IDE
+.vscode/
+.idea/
