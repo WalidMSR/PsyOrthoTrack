@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import export_medical_record
+from . import views
 
 urlpatterns = [
-    path('export_medical_record/<int:patient_id>/', export_medical_record, name='export_medical_record'),
+    path('view_medical_record/<int:patient_id>/', views.view_medical_record, name='view_medical_record'),
+    path('export_medical_record/<int:patient_id>/', views.export_medical_record, name='export_medical_record'),
 ]

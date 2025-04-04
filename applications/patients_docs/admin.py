@@ -11,7 +11,7 @@ admin.site.site_header = "PsyOrthoTrack"
 
 @admin.register(ProfilPatient)
 class ProfilPatientAdmin(admin.ModelAdmin):
-    list_display = ('prenom', 'nom', 'genre',  'date_de_rdv',"view_medical_records_button", "export_medical_records_button")
+    list_display = ('nom', 'prenom', 'date_naissance', 'age' ,'genre',  'date_de_rdv',"view_medical_records_button", "export_medical_records_button")
     list_filter = ('genre', 'cree_le', 'date_de_rdv')
     search_fields = ('prenom', 'nom', 'numero_telephone_1', 'numero_telephone_2')
     ordering = ('nom', 'prenom')
@@ -32,7 +32,7 @@ class ProfilPatientAdmin(admin.ModelAdmin):
 
     def view_medical_records_button(self, obj):
         return format_html(
-            '<a class="button" href="/admin/patients_docs/profilpatient/?patientidexact={}">📁 Voir Dossiers</a>',
+            '<a class="button" href="/patients_docs/view_medical_record/{}">📁 Voir Dossiers</a>',
             obj.id
         )
     view_medical_records_button.short_description = ""

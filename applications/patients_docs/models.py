@@ -9,15 +9,16 @@ class ProfilPatient(models.Model):
     ]
     prenom = models.CharField("Prénom", max_length=100)
     nom = models.CharField("Nom", max_length=100)
-    
+    date_naissance = models.DateField("Date de naissance", default=timezone.now) 
+    age = models.IntegerField("Âge", default=0)  
     genre = models.CharField("Genre", max_length=10, choices=choix_genre)
     adresse = models.CharField("Adresse", max_length=200)
-    numero_telephone_1 = models.CharField("Numéro de téléphone 1", max_length=10, unique=True)  # Un numéro ne peut pas être utilisé deux fois
-    numero_telephone_2 = models.CharField("Numéro de téléphone 2", max_length=10, unique=True, blank=True, null=True)
+    numero_telephone_1 = models.CharField("Numéro de téléphone 1", max_length=10)  # Un numéro ne peut pas être utilisé deux fois
+    numero_telephone_2 = models.CharField("Numéro de téléphone 2", max_length=10, blank=True, null=True)
     email = models.EmailField("Email", blank=True, null=True)
     photo = models.ImageField("Photo", upload_to="patient_pictures/", blank=True, null=True)
 
-    date_de_rdv = models.DateField("Date de l'entretien")  # Date de l'entretien
+    date_de_rdv = models.DateField("Date d'entretien")  # Date de l'entretien
     scolarite = models.CharField("Scolarité", max_length=200, blank=True, null=True)  # Scolarité
     type_de_trouble = models.CharField("Type de trouble", max_length=200)  # Type de trouble
     demande = models.TextField("Demande")  # Demande
@@ -25,18 +26,6 @@ class ProfilPatient(models.Model):
 
     cree_le = models.DateTimeField("Créé le", default=timezone.now)  # Créé le
 
-    class Meta:
-        unique_together = ('nom', 'prenom')  # Empêche les doublons exacts
-        ordering = ['nom', 'prenom']
-        verbose_name = "Documents et ressources"
-        verbose_name_plural = "Documents et ressources"
-
-   
-
-   
-#class DossierMedical(models.Model):
-
-    #patient = models.ForeignKey('ProfilPatient', on_delete=models.CASCADE)
     #Informations-dossier médicale
     date_de_creation_dossier = models.DateField("Date du dossier",default=timezone.now)
     description = models.TextField("Description",default="")
@@ -192,10 +181,9 @@ class ProfilPatient(models.Model):
     symptomes_apparents = models.TextField("الاعراض الظاهرة", blank=True, null=True)
 
     
-
-    #def __str__(self):
-    #    return f"Dossier médical pour {self.patient.prenom} {self.patient.nom} le {self.ate_de_creation_dossier}"
-
-    #class Meta:
-    #    verbose_name = "Dossier médical"
-    #   verbose_name_plural = "Dossiers médicaux"
+    class Meta:
+        unique_together = ('nom', 'prenom')  # Empêche les doublons exacts
+        ordering = ['nom', 'prenom']
+        verbose_name = "Documents et ressources"
+        verbose_name_plural = "Documents et ressources"
+    

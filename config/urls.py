@@ -22,3 +22,4 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('patients_docs/', include('applications.patients_docs.urls')),  # Inclure les URLs de l'application
 ]
+
