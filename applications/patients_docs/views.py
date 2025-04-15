@@ -1,11 +1,15 @@
 import os
 import json
-from django.conf import settings
 import pdfkit
-from django.shortcuts import render, get_object_or_404
+
+from django.conf import settings
+
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpRequest
 from django.template.loader import render_to_string
+
 from applications.patients_docs.models import ProfilPatient
+from .forms import PatientDocumentForm
 
 pdfkit_config = pdfkit.configuration(wkhtmltopdf='/usr/local/bin/wkhtmltopdf')
 
@@ -15,7 +19,7 @@ def view_medical_record(request, patient_id):
     
     # Utilise un modèle HTML pour générer le contenu à convertir en PDF
     html_content = render_to_string(
-        'patients_docs/pdf_template.html', {'patient': patient}
+        'patients_docs/pdf_template.html', {'dossier_medical': patient}
     )
 
     # Indiquer explicitement le chemin vers wkhtmltopdf
@@ -31,26 +35,6 @@ def view_medical_record(request, patient_id):
     return response
 
 
-# def export_medical_record(request: HttpRequest, patient_id: int) -> HttpResponse:
-#     records = ProfilPatient.objects.filter(id=patient_id)
-
-#     if not records.exists():
-#         return HttpResponse(f"Patient avec l'ID {patient_id} non trouvé.", status=404)
-
-#     # Assurer que le contexte soit correct et sans espaces dans les clés
-#     context = {'dossier_medical': records.first()}  # Utilisation d'un objet unique ici avec 'first()'
-
-#     html = render_to_string('patients_docs/pdf_template.html', context)
-
-#     try:
-#         pdf = pdfkit.from_string(html, False, configuration=pdfkit_config)
-#     except Exception as e:
-#         return HttpResponse(f"Erreur lors de la génération du PDF: {str(e)}", status=500)
-
-#     response = HttpResponse(pdf, content_type='application/pdf')
-#     response['Content-Disposition'] = f'attachment; filename="ListesPatient_{patient_id}.pdf"'
-
-#     return response
 CONFIG_PATH = os.path.join(settings.BASE_DIR, 'config.json')
 
 def charger_chemin_dossier():
@@ -104,3 +88,20 @@ def export_medical_record(request, patient_id):
         response = HttpResponse(f.read(), content_type='application/pdf')
         response['Content-Disposition'] = f'attachment; filename="{nom_fichier}"'
         return response
+    
+
+
+def ajouter_patient(request):
+    if request.method == 'POST':
+        form = PatientDocumentForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('ajouter_patient')
+            # return redirect('admin:patient_doc_patientprofile_ajouter_patient')
+        else:
+            print(form.errors)  # Affiche les erreurs dans le terminal
+    else:
+        form = PatientDocumentForm()
+    
+    return render(request, 'patients_docs/forms_index.html', {'form': form})
+

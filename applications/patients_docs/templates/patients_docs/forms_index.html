@@ -1,0 +1,309 @@
+{% load static %}
+<!DOCTYPE html>
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter un Patient</title>
+    
+    <!-- Import de TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body class="bg-gray-100 font-sans text-gray-800">
+
+    <div class="container mx-auto my-auto  p-8 shadow-[0_4px_8px_rgba(0,0,0,0.2)] mt-8 mb-8">
+        <h1 class="text-3xl font-bold text-blue-700 mb-8 text-center ">Ajouter un Patient</h1>
+
+        <form method="post" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow-md space-y-6">
+            {% csrf_token %}
+            {% if form.errors %}
+              <div class="bg-red-100 text-red-700 p-4 rounded mb-4">
+                  <strong>Erreur(s) :</strong>
+                  <ul>
+                      {% for field in form %}
+                          {% for error in field.errors %}
+                              <li>{{ field.label }} : {{ error }}</li>
+                          {% endfor %}
+                      {% endfor %}
+                  </ul>
+              </div>
+            {% endif %}
+
+            <!-- Section collapsible pour l'État Civil -->
+            <div x-data="{ open: true }">
+                <h2 @click="open = !open" class="text-xl font-bold text-blue-700 uppercase cursor-pointer flex justify-between items-center py-2 px-4 border-b-2 border-gray-300 bg-gray-50">
+                    Coordonnées du patient
+                    <svg :class="open ? 'transform rotate-180' : ''" class="w-4 h-4 transition-transform">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 9l-7 7-7-7" stroke="currentColor" fill="none" />
+                    </svg>
+                </h2>
+                <div x-show="open" x-transition class="grid grid-cols-1 md:grid-cols-3 gap-6 p-4">
+                    <!-- Colonne 1 -->
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block font-semibold mb-1">Nom :</label>
+                            {{ form.nom }}
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-1">Prénom :</label>
+                            {{ form.prenom }}
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-1">Date de naissance :</label>
+                            {{ form.date_naissance }}
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-1">Lieu de naissance :</label>
+                            {{ form.lieu_naissance }}
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-1">Sexe :</label>
+                            {{ form.genre }}
+                        </div>
+                    </div>
+
+                    <!-- Colonne 2 -->
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block font-semibold mb-1">Adresse :</label>
+                            {{ form.adresse }}
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-1">Prénom du père :</label>
+                            {{ form.prenom_pere }}
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-1">Téléphone 1 :</label>
+                            {{ form.numero_telephone_1 }}
+                        </div>
+                        <div>
+                          <label class="block font-semibold mb-1">Prénom de la mère :</label>
+                          {{ form.prenom_mere }}
+                      </div>
+                        <div>
+                            <label class="block font-semibold mb-1">Téléphone 2 :</label>
+                            {{ form.numero_telephone_2 }}
+                        </div>
+                        
+                    </div>
+
+                    <!-- Colonne 3 -->
+                    <div class="space-y-4">
+                      <div>
+                         <label class="block font-semibold mb-1">Email :</label>
+                         {{ form.email }}
+                      </div>
+                      <div>
+                          <label class="block font-semibold mb-1">Photo :</label>
+                          {{ form.photo }}
+                      </div>
+                      <div>
+                        <label class="block font-semibold mb-1">scolarité :</label>
+                        {{ form.scolarite }}
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div x-data="{ open: true }">
+              <h2 @click="open = !open" class="text-xl font-bold text-blue-700 uppercase cursor-pointer flex justify-between items-center py-2 px-4 border-b-2 border-gray-300 bg-gray-50">
+                  État civil
+                  <svg :class="open ? 'transform rotate-180' : ''" class="w-4 h-4 transition-transform">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M19 9l-7 7-7-7" stroke="currentColor" fill="none" />
+                  </svg>
+              </h2>
+              <div x-show="open" x-transition class="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
+                  <!-- Colonne 1 -->
+                  <div class="space-y-4">
+                      
+                      <div>
+                          <label class="block font-semibold mb-1">Type de trouble :</label>
+                          {{ form.type_de_trouble }}
+                      </div>
+                      <div>
+                          <label class="block font-semibold mb-1">Demande :</label>
+                          {{ form.demande }}
+                      </div>
+                      
+                  </div>
+
+                  <!-- Colonne 2 -->
+                  <div class="space-y-4">
+                    <div>
+                      <label class="block font-semibold mb-1">envoyé par :</label>
+                      {{ form.envoye_par }}
+                  </div>
+                  <div>
+                      <label class="block font-semibold mb-1">Description :</label>
+                      {{ form.description }}
+                  </div>
+                  </div>
+
+                  <!-- Colonne 3 -->
+                  <!-- <div class="space-y-4">
+                      <div>
+                          <label class="block font-semibold mb-1">Photo :</label>
+                          {{ form.photo }}
+                      </div>
+                  </div> --> -->
+              </div>
+            </div>
+
+            
+            <div x-data="{ open: true }">
+              <h2 @click="open = !open" class="text-xl font-bold text-blue-700 uppercase cursor-pointer flex justify-between items-center py-2 px-4 border-b-2 border-gray-300 bg-gray-50">
+                  Coordonnées du patient
+                  <svg :class="open ? 'transform rotate-180' : ''" class="w-4 h-4 transition-transform">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M19 9l-7 7-7-7" stroke="currentColor" fill="none" />
+                  </svg>
+              </h2>
+              <div x-show="open" x-transition class="grid grid-cols-1 md:grid-cols-3 gap-6 p-4">
+                  <!-- Colonne 1 -->
+                  <div class="space-y-4">
+                      <div>
+                          <label class="block font-semibold mb-1">Nom :</label>
+                          {{ form.nom }}
+                      </div>
+                      <div>
+                          <label class="block font-semibold mb-1">Prénom :</label>
+                          {{ form.prenom }}
+                      </div>
+                      <div>
+                          <label class="block font-semibold mb-1">Date de naissance :</label>
+                          {{ form.date_naissance }}
+                      </div>
+                      <div>
+                          <label class="block font-semibold mb-1">Lieu de naissance :</label>
+                          {{ form.lieu_naissance }}
+                      </div>
+                      <div>
+                          <label class="block font-semibold mb-1">Sexe :</label>
+                          {{ form.genre }}
+                      </div>
+                  </div>
+
+                  <!-- Colonne 2 -->
+                  <div class="space-y-4">
+                      <div>
+                          <label class="block font-semibold mb-1">Adresse :</label>
+                          {{ form.adresse }}
+                      </div>
+                      <div>
+                          <label class="block font-semibold mb-1">Scolarité :</label>
+                          {{ form.scolarite }}
+                      </div>
+                      <div>
+                          <label class="block font-semibold mb-1">Téléphone 1 :</label>
+                          {{ form.numero_telephone_1 }}
+                      </div>
+                      <div>
+                          <label class="block font-semibold mb-1">Téléphone 2 :</label>
+                          {{ form.numero_telephone_2 }}
+                      </div>
+                      <div>
+                          <label class="block font-semibold mb-1">Email :</label>
+                          {{ form.email }}
+                      </div>
+                  </div>
+
+                  <!-- Colonne 3 -->
+                  <div class="space-y-4">
+                      <div>
+                          <label class="block font-semibold mb-1">Photo :</label>
+                          {{ form.photo }}
+                      </div>
+                  </div>
+              </div>
+              </div>
+
+
+              <div x-data="{ open: true }">
+                <h2 @click="open = !open" class="text-xl font-bold text-blue-700 uppercase cursor-pointer flex justify-between items-center py-2 px-4 border-b-2 border-gray-300 bg-gray-50">
+                    Coordonnées du patient
+                    <svg :class="open ? 'transform rotate-180' : ''" class="w-4 h-4 transition-transform">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 9l-7 7-7-7" stroke="currentColor" fill="none" />
+                    </svg>
+                </h2>
+                <div x-show="open" x-transition class="grid grid-cols-1 md:grid-cols-3 gap-6 p-4">
+                    <!-- Colonne 1 -->
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block font-semibold mb-1">Nom :</label>
+                            {{ form.nom }}
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-1">Prénom :</label>
+                            {{ form.prenom }}
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-1">Date de naissance :</label>
+                            {{ form.date_naissance }}
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-1">Lieu de naissance :</label>
+                            {{ form.lieu_naissance }}
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-1">Sexe :</label>
+                            {{ form.genre }}
+                        </div>
+                    </div>
+  
+                    <!-- Colonne 2 -->
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block font-semibold mb-1">Adresse :</label>
+                            {{ form.adresse }}
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-1">Scolarité :</label>
+                            {{ form.scolarite }}
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-1">Téléphone 1 :</label>
+                            {{ form.numero_telephone_1 }}
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-1">Téléphone 2 :</label>
+                            {{ form.numero_telephone_2 }}
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-1">Email :</label>
+                            {{ form.email }}
+                        </div>
+                    </div>
+  
+                    <!-- Colonne 3 -->
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block font-semibold mb-1">Photo :</label>
+                            {{ form.photo }}
+                        </div>
+                    </div>
+                </div>
+              </div>
+
+
+            <!-- Bouton de soumission -->
+            <div class="pt-4 mx-auto text-center">
+              <button type="submit" class="bg-blue-600 w-[350px] md:mr-6 text-[18px] text-xl text-white px-6 py-3 text-lg rounded-lg hover:bg-blue-700 transition mx-auto flex-1 sm:mt-6">
+                Enregistrer
+              </button>
+              <button type="submit" class="bg-blue-600 w-[350px] text-xl text-[18px] text-white px-6 py-3 text-lg rounded-lg hover:bg-blue-700 transition mx-auto flex-1 sm:mt-6">
+                Enregistrer et ajouter un nouveau
+              </button>
+            </div>
+            
+        </form>
+    </div>
+
+</body>
+</html>

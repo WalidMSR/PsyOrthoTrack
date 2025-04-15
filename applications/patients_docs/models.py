@@ -18,17 +18,15 @@ class ProfilPatient(models.Model):
     prenom = models.CharField("Prénom", max_length=100)
     nom = models.CharField("Nom", max_length=100)
     date_naissance = models.DateField("Date de naissance") 
-
-    # age = models.IntegerField("Âge", default=0)  
-    
+    lieu_naissance = models.CharField("Lieu de naissance",max_length=50, blank=True, null=True )
+ 
     genre = models.CharField("Genre", max_length=10, choices=choix_genre)
     adresse = models.CharField("Adresse", max_length=200)
 
-    
-
     phone_validator = RegexValidator(r'^\d{10}$', 'Entrez un numéro à 10 chiffres.')
-
+    prenom_pere = models.CharField("Prénom du père", max_length=100, blank=True, null=True)
     numero_telephone_1 = models.CharField("Numéro de téléphone 1", max_length=10, unique=True, validators=[phone_validator])
+    prenom_mere = models.CharField("Prénom de la mère", max_length=100, blank=True, null=True)
     numero_telephone_2 = models.CharField("Numéro de téléphone 2", max_length=10, unique=True, blank=True, null=True, validators=[phone_validator])
     
     def clean(self):
@@ -44,15 +42,16 @@ class ProfilPatient(models.Model):
     email = models.EmailField("Email", blank=True, null=True)
     photo = models.ImageField("Photo", upload_to="patient_pictures/", blank=True, null=True)
 
-    date_de_rdv = models.DateField("Date d'entretien", default=date.today)  # Date de l'entretien
     scolarite = models.CharField("Scolarité", max_length=200, blank=True, null=True)  # Scolarité
+    # date_de_rdv = models.DateField("Date d'entretien", default=date.today, blank=True, null=True)  # Date de l'entretien
     
+    
+    cree_le = models.DateTimeField("Créé le", default=timezone.now, blank=True, null=True)  # Créé le
     type_de_trouble = models.CharField("Type de trouble", max_length=200,blank=True, null=True)  # Type de trouble
-    
     demande = models.TextField("Demande", blank=True, null=True)  # Demande
     envoye_par = models.CharField("Envoyé par", max_length=200, blank=True, null=True)  # Envoyé par
 
-    cree_le = models.DateTimeField("Créé le", default=timezone.now, blank=True, null=True)  # Créé le
+    
 
     #Informations-dossier médicale
     date_de_creation_dossier = models.DateField("Date du dossier",default=timezone.now, blank=True, null=True)
@@ -128,7 +127,7 @@ class ProfilPatient(models.Model):
     poids_enfant = models.DecimalField("وزنه", max_digits=5, decimal_places=2, blank=True, null=True)
     mis_en_incubateur = models.BooleanField("هل وضع في حاضنة زجاجية", choices=choix_oui_non, default=False, blank=True, null=True)
 
-    alimentation_enfant = models.CharField("تغدية الطفل", max_length=200, choices=[('Naturelle', 'طبيعية'), ('Artificielle', 'اصطناعية')],default="Inconnu", blank=True, null=True)
+    alimentation_enfant = models.CharField("تغدية الطفل", max_length=200, choices=[('Naturelle', 'طبيعية'), ('Artificielle', 'اصطناعية')],default="Naturelle", blank=True, null=True)
     alimentation_enfant_duree = models.CharField("المدة", max_length=100, blank=True, null=True)
     sommeil_enfant = models.CharField("نوم الطفل", max_length=200, choices=[('Normal', 'عادي'), ('Perturbé', 'مضطرب')], default="", blank=True, null=True)
 

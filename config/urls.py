@@ -17,9 +17,14 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path,include
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('patients_docs/', include('applications.patients_docs.urls')),  # Inclure les URLs de l'application
-]
+    path('patients_docs/', include('applications.patients_docs.urls')),  
+    path('appointments/', include('applications.appointments.urls')),
+    path('evaluation/', include('applications.evaluation.urls')),
+    path('vitrine/', include('applications.vitrine.urls')), 
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

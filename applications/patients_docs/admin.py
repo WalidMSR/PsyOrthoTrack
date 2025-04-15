@@ -11,8 +11,8 @@ admin.site.site_header = "PsyOrthoTrack"
 
 @admin.register(ProfilPatient)
 class ProfilPatientAdmin(admin.ModelAdmin):
-    list_display = ('nom', 'prenom', 'date_naissance', 'age' ,'genre',  'date_de_rdv',"view_medical_records_button", "export_medical_records_button")
-    list_filter = ('genre', 'cree_le', 'date_de_rdv')
+    list_display = ('nom', 'prenom', 'date_naissance', 'age' ,'genre',  'cree_le',"view_medical_records_button", "export_medical_records_button")
+    list_filter = ('genre', 'cree_le')
     search_fields = ('prenom', 'nom', 'numero_telephone_1', 'numero_telephone_2')
     ordering = ('nom', 'prenom')
     verbose_name = "Documents et ressources "
@@ -20,15 +20,14 @@ class ProfilPatientAdmin(admin.ModelAdmin):
 
     fieldsets = [
         ("Patients", {
-            "fields": ['prenom', 'nom','date_naissance', 'genre','adresse',
-                       'numero_telephone_1', 'numero_telephone_2', 'email', 'date_de_rdv', 'photo'],
+            "fields": ['prenom', 'nom','date_naissance', 'lieu_naissance', 'genre','adresse',
+                       'numero_telephone_1', 'numero_telephone_2', 'email', 'cree_le', 'photo'],
             "classes": ["tab"]
         }),
         
- ("Dossiers médicaux", {
+        ("Dossiers médicaux", {
             "fields": [
-                "scolarite", "type_de_trouble", "demande", "envoye_par",
-                "cree_le", "date_de_creation_dossier", "description", "prescription", "maladies_ou_handicaps_famille",
+                "scolarite", "type_de_trouble", "demande", "envoye_par", "date_de_creation_dossier", "description", "prescription", "maladies_ou_handicaps_famille",
                 "maladies_ou_handicaps_du_pere", "maladies_ou_handicaps_de_la_mere", "maladies_ou_handicaps_chez_les_freres", "lien_entre_les_parents", "nombre_freres_soeurs",
                 "nombre_freres", "nombre_soeurs", "position_entre_les_freres", "sante_freres_soeurs", "antecedents_familiaux",
                 "vie_parentale", "deces_mere", "deces_pere", "deces_parents", "enfant_vit_avec_les_parents",
@@ -47,7 +46,8 @@ class ProfilPatientAdmin(admin.ModelAdmin):
                 "utilisation_phrase", "utilisation_jumelage", "langue_dans_maison", "langue_enfant_actuelle", "alimentation_et_deglutition",
                 "type_alimentation", "position_alimentation", "voies_erronnees_alimentation", "mastication", "developpement_emotionnel",
                 "relation_freres", "relation_avec_autres", "est_social", "aime_jouer_avec_autres", "enfants_avec_qui_il_joue",
-                "comportement_a_la_maison", "sort_seul", "comportement_chez_lui", "etat_education_prescolaire", "retard_scolaire", "comportement_entretien", "autres_observations", "age_decouverte_maladie", "symptomes_apparents"
+                "comportement_a_la_maison", "sort_seul", "comportement_chez_lui", "etat_education_prescolaire", "retard_scolaire", "comportement_entretien",
+                "autres_observations", "age_decouverte_maladie", "symptomes_apparents"
             ],
             "classes": ["tab"]
         }),
@@ -76,3 +76,7 @@ class ProfilPatientAdmin(admin.ModelAdmin):
             export_url
         )
     export_medical_records_button.short_description = " "
+
+# @admin.register("Medcin")
+# class MedcinAdmin(admin.ModelAdmin):
+#     list_display = ('nom', 'prenom')

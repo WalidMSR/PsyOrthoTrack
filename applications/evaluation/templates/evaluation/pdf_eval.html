@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Évaluation</title>
+   
+</head>
+<body>
+    <div class="header">
+        <h1>Fiche d'Évaluation</h1>
+    </div>
+    <div class="content">
+        <form method="post">
+            {% csrf_token %}
+            {% if form.errors %}
+              <div class="bg-red-100 text-red-700 p-4 rounded mb-4">
+                  <strong>Erreur(s) :</strong>
+                  <ul>
+                      {% for field in form %}
+                          {% for error in field.errors %}
+                              <li>{{ field.label }} : {{ error }}</li>
+                          {% endfor %}
+                      {% endfor %}
+                  </ul>
+              </div>
+            {% endif %}
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                <tr style="text-align: left;">
+                    <td><strong>Nom :</strong> {{ form.nom.value }}</td>
+                    <td><strong>Prénom :</strong> {{ form.prenom.value }}</td>
+                </tr>
+                <tr>
+    
+                </tr>
+                <tr>
+                    <td><strong>Date de création :</strong> {{ form.description.value }}</td>
+                    <td><strong>Titre :</strong> {{ form.titre }}</td>
+                </tr>
+            </table>
+             
+        </form>
+               
+        <h2>1. Moyenne des scores</h2>
+            {% if chart_moyenne %}
+                <img src="data:image/png;base64,{{ chart_moyenne }}" alt="Moyenne des scores" style="width: 80%; max-width: 700px;">
+            {% else %}
+                <p>Aucune donnée pour la moyenne des scores.</p>
+            {% endif %}
+
+            <h2>2. Répartition des scores (Boxplot)</h2>
+            {% if chart_boxplot %}
+                <img src="data:image/png;base64,{{ chart_boxplot }}" alt="Boxplot" style="width: 80%; max-width: 700px;">
+            {% else %}
+                <p>Aucune donnée pour le boxplot.</p>
+            {% endif %}
+
+    </div>
+    <div class="footer">
+        <p>Généré par PsyOrthoTrack</p>
+    </div>
+</body>
+</html>
