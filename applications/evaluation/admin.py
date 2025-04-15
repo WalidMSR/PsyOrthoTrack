@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect
 
 
 # Register your models here.
-@admin.register(Evaluation)
+# @admin.register(Evaluation)
 class EvaluationAdmin(admin.ModelAdmin):
     list_display = ('nom', 'prenom' , 'titre', 'date_de_creation_dossier', 'view_medical_records_button', 'export_medical_records_button')
     search_fields =  ('nom', 'prenom')
@@ -31,4 +31,5 @@ class EvaluationAdmin(admin.ModelAdmin):
 
     def add_view(self, request, form_url='', extra_context=None):
         return HttpResponseRedirect(reverse('ajouter_eval'))
+    
     

@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -5,95 +6,54 @@
   <title>Connexion</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="min-h-screen flex items-center justify-center text-xl bg-gray-50">
-
-  <div class="flex items-center justify-center w-full">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-20 bg-white rounded-2xl shadow-xl max-w-5xl w-full">
+<body class="min-h-screen flex items-center justify-center bg-gray-50">
+  <div class="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl">
+    <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">Se connecter</h2>
+    <form method="post" class="space-y-6">
+      {% csrf_token %}
       
-      <!-- Image affichée à partir de sm -->
-      <div class="hidden sm:block">
-        <img src="login.jpg" alt="Image connexion" class="w-full h-full object-cover rounded-l-2xl">
-      </div>
-
-      <!-- Formulaire de connexion -->
-      <div class="p-8 w-full">
-        <h2 class="text-5xl font-bold mb-6 text-center text-gray-800">Connexion</h2>
-
-        {% if messages %}
-          {% for message in messages %}
-            <p class="text-red-500 text-sm mb-4">{{ message }}</p>
-          {% endfor %}
+      <!-- Champ identifiant -->
+      <div>
+        <label for="{{ form.identifiant.id_for_label }}" class="block text-gray-600 text-sm mb-1">
+          {{ form.identifiant.label }}
+        </label>
+        {{ form.identifiant }}
+        {% if form.identifiant.errors %}
+          <p class="text-red-500 text-sm mt-1">{{ form.identifiant.errors.0 }}</p>
         {% endif %}
-
-        <form method="post" class="space-y-8">
-          {% csrf_token %}
-
-          <!-- Email -->
-          <div>
-            <input type="email" name="email" placeholder="Adresse email" required
-                   class="w-full px-5 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
-          </div>
-
-          <!-- Mot de passe avec bouton afficher/masquer -->
-          <div class="relative">
-            <input type="password" name="mot_de_passe" id="motDePasse" placeholder="Mot de passe" required
-                   class="w-full px-5 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 pr-12">
-            
-            <!-- Bouton toggle -->
-            <button type="button" id="togglePassword" class="absolute inset-y-0 right-3 flex items-center text-gray-500">
-              <!-- Icône œil (open) -->
-              <svg id="eyeOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-                   viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-              </svg>
-              <!-- Icône œil barré (closed) -->
-              <svg id="eyeClosed" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none"
-                   viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.97 9.97 0 012.296-3.957m3.09-2.447A9.965 9.965 0 0112 5c4.477 0 8.267 2.943 9.541 7a9.97 9.97 0 01-1.302 2.572M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M3 3l18 18" />
-              </svg>
-            </button>
-          </div>
-
-          <!-- Bouton connexion -->
-          <div>
-            <button type="submit"
-                    class="w-full text-xl bg-blue-500 text-white py-3 rounded-xl hover:bg-blue-600 transition duration-200">
-              Se connecter
-            </button>
-          </div>
-
-          <!-- Lien vers inscription -->
-          <div class="text-center text-gray-600 text-sm">
-            Pas encore de compte ?
-            <a href="{% url 'login' %}" class="text-blue-500 hover:underline">Créer un compte</a>
-          </div>
-        </form>
       </div>
-    </div>
+      
+      <!-- Champ password -->
+      <div>
+        <label for="{{ form.password.id_for_label }}" class="block text-gray-600 text-sm mb-1">
+          {{ form.password.label }}
+        </label>
+        {{ form.password }}
+        {% if form.password.errors %}
+          <p class="text-red-500 text-sm mt-1">{{ form.password.errors.0 }}</p>
+        {% endif %}
+      </div>
+      
+      <!-- Bouton de connexion -->
+      <div>
+        <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 transition duration-200 text-white py-3 rounded-xl">
+          Se connecter
+        </button>
+      </div>
+      
+      <!-- Liens supplémentaires -->
+      <div class="flex flex-col items-center text-center text-gray-600 text-sm space-y-2">
+        <a  href="{% url 'password_reset' %}" class="text-blue-500 hover:underline">
+          Mot de passe oublié ?
+        </a>
+        <p>
+          Vous n'avez pas de compte ? 
+          <a href="{% url 'login' %}" class="text-blue-500 hover:underline">
+            Créez-en un
+          </a>
+        </p>
+      </div>
+    </form>
   </div>
-
-  <!-- ✅ Script fonctionnel -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const togglePassword = document.getElementById('togglePassword');
-      const passwordField = document.getElementById('motDePasse');
-      const eyeOpen = document.getElementById('eyeOpen');
-      const eyeClosed = document.getElementById('eyeClosed');
-
-      togglePassword.addEventListener('click', function () {
-        const isHidden = passwordField.type === "password";
-        passwordField.type = isHidden ? "text" : "password";
-        eyeOpen.classList.toggle("hidden", !isHidden);
-        eyeClosed.classList.toggle("hidden", isHidden);
-      });
-    });
-  </script>
-
 </body>
 </html>

@@ -1,7 +1,6 @@
 from django.contrib import admin
 from .models import RendezVous
 
-@admin.register(RendezVous)
 class RendezVousAdmin(admin.ModelAdmin):
     list_display = (
         'nom_patient', 'date', 'heure', 'type_seance', 'statut', 

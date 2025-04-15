@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     "applications.patients_docs.apps.PatientsDocsConfig", 
     "applications.evaluation.apps.EvaluationConfig",
     "applications.appointments.apps.AppointmentsConfig",
-    "applications.vitrine.apps.VitrineConfig",
+    "applications.vitrine.apps.VitrineConfig"
     
 
 ]
@@ -308,3 +308,16 @@ JAZZMIN_SETTINGS = {
     # "language_chooser": True,
 }
 
+
+
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # ou un autre
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'walidoumn@gmail.com'
+EMAIL_HOST_PASSWORD = 'aamg qohr ifri vvzk'
+DEFAULT_FROM_EMAIL = 'walidoumn@gmail.com'
+
+ADMIN_EMAIL = 'walidoumn@gmail.com'  # où tu veux recevoir les inscriptions

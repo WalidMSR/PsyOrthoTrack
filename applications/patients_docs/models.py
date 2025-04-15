@@ -15,8 +15,8 @@ class ProfilPatient(models.Model):
         today = date.today()
         return today.year - self.date_naissance.year
 
-    prenom = models.CharField("Prénom", max_length=100)
-    nom = models.CharField("Nom", max_length=100)
+    prenom = models.CharField("Prénom", max_length=100, blank=True, null=True )
+    nom = models.CharField("Nom", max_length=100, blank=True, null=True )
     date_naissance = models.DateField("Date de naissance") 
     lieu_naissance = models.CharField("Lieu de naissance",max_length=50, blank=True, null=True )
  
@@ -220,4 +220,5 @@ class ProfilPatient(models.Model):
         verbose_name_plural = "Documents et ressources"
     
     def __str__(self):
-        return f"{self.prenom} {self.nom}"
+        return f"{self.prenom} {self.nom} - {self.date_naissance}"
+
