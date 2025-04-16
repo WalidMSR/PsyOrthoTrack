@@ -263,12 +263,17 @@ JAZZMIN_SETTINGS = {
         "patients_docs.profilpatient": "fas fa-solid fa-file-medical",
         "evaluation.evaluation": "fas fa-stethoscope",
         "auth.user": "fas fa-user-nurse", 
+        "vitrine.customUser": "fas fa-solid fa-user-nurse",
+        "vitrine.cabinet" : "fas fa-solid fa-house-medical"
     },
 
     "menu": [
         {"model": "patients_docs.profilpatient", "name": "Documents et ressources", "icon": "fas fa-solid fa-file-medical"},
         {"model": "patients_docs.evaluation", "name": "Evaluations", "icon": "fas fa-calendar-check"},
         {"model": "appointments.rendezvous", "name": "Rendez-vous", "icon": "fas fa-calendar-check"},
+        
+        {"model": "vitrine.cabinet", "name": "Cabinet", "icon": "fas fa-solid fa-house-medical"},
+        {"model": "vitrine.customUser", "name": "Utilisateurs", "icon": "fas fa-solid fa-user-nurse"},
     ],
     # Icons that are used when one is not manually specified
     "default_icon_parents": "fas fa-chevron-circle-right",

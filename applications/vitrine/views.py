@@ -69,31 +69,31 @@ def cabinet_staff_dashboard(request):
 
 
 
-def validate_user(request, user_id):
-    # Récupérer l'utilisateur
-    user = get_user_model().objects.get(id=user_id)
+# def validate_user(request, user_id):
+#     # Récupérer l'utilisateur
+#     user = get_user_model().objects.get(id=user_id)
 
-    # Vérification des paiements et des offres associées
-    paiement = Paiement.objects.filter(user=user, status_paiement='paye').first()
-    if paiement:
-        # Si le paiement est validé, activer l'utilisateur
-        user.is_active = True
-        user.save()
+#     # Vérification des paiements et des offres associées
+#     paiement = Paiement.objects.filter(user=user, status_paiement='paye').first()
+#     if paiement:
+#         # Si le paiement est validé, activer l'utilisateur
+#         user.is_active = True
+#         user.save()
 
-        # Envoi de l'email de confirmation
-        send_mail(
-            'Compte activé',
-            f"Bonjour {user.username},\n\nVotre compte a été activé. Voici un résumé de votre inscription :\n\nNom d'utilisateur : {user.username}\nEmail : {user.email}\nOffre choisie : {paiement.offre.nom_offre}\nMontant payé : {paiement.montant} Dz\nDate d'inscription : {user.date_joined.strftime('%Y-%m-%d')}\nDate de validation : {now().strftime('%Y-%m-%d')}\n\nMerci de votre confiance.",
-            settings.DEFAULT_FROM_EMAIL,
-            [user.email],
-            fail_silently=False,
-        )
+#         # Envoi de l'email de confirmation
+#         send_mail(
+#             'Compte activé',
+#             f"Bonjour {user.username},\n\nVotre compte a été activé. Voici un résumé de votre inscription :\n\nNom d'utilisateur : {user.username}\nEmail : {user.email}\nOffre choisie : {paiement.offre.nom_offre}\nMontant payé : {paiement.montant} Dz\nDate d'inscription : {user.date_joined.strftime('%Y-%m-%d')}\nDate de validation : {now().strftime('%Y-%m-%d')}\n\nMerci de votre confiance.",
+#             settings.DEFAULT_FROM_EMAIL,
+#             [user.email],
+#             fail_silently=False,
+#         )
 
-        # Rediriger vers une page de confirmation ou vers l'accueil
-        return redirect('home')  # Ou une autre page de votre choix
-    else:
-        # Si le paiement n'est pas trouvé ou non validé
-        return redirect('error')
+#         # Rediriger vers une page de confirmation ou vers l'accueil
+#         return redirect('home')  # Ou une autre page de votre choix
+#     else:
+#         # Si le paiement n'est pas trouvé ou non validé
+#         return redirect('error')
     
 def client_signup_view(request):
     if request.method == 'POST':

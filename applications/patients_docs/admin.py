@@ -4,6 +4,7 @@ from applications.patients_docs.models import ProfilPatient
 from django.utils.html import format_html
 from django.urls import reverse
 from django.forms import DateInput
+from django.http import HttpResponseRedirect
 
 admin_site = admin.AdminSite(name='admin_personnalise')
 
@@ -77,6 +78,9 @@ class ProfilPatientAdmin(admin.ModelAdmin):
         )
     export_medical_records_button.short_description = " "
 
+    def add_view(self, request, form_url='', extra_context=None):
+        return HttpResponseRedirect(reverse('ajouter_patient'))
+    
 # @admin.register("Medcin")
 # class MedcinAdmin(admin.ModelAdmin):
 #     list_display = ('nom', 'prenom')

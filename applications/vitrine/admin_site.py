@@ -148,12 +148,8 @@ cabinet_admin_site.register(CustomUser, CustomUserAdmin)
 cabinet_admin_site.register(RendezVous, RendezVousAdmin)
 cabinet_admin_site.register(Evaluation, EvaluationAdmin)
 cabinet_admin_site.register(ProfilPatient, ProfilPatientAdmin)
-
+cabinet_admin_site.register(Cabinet, CabinetAdmin) 
 print("📋 Modèles enregistrés dans cabinet_admin_site :", list(cabinet_admin_site._registry.keys()))
-
-
-
-
 
 
 
@@ -168,11 +164,11 @@ class SuperAdminSite(AdminSite):
 
 
 super_admin_site = SuperAdminSite(name='superadmin')
-super_admin_site.register(CustomUser, CustomUserAdmin)  # Assure-toi d'enregistrer avec CustomUserAdmin
+super_admin_site.register(CustomUser, CustomUserAdmin)  
 super_admin_site.register(Cabinet, CabinetAdmin)
-# super_admin_site.register(RendezVous, RendezVousAdmin)  # Commenté car tu n'as pas de superadmin pour RendezVous ici
-
-
+super_admin_site.register(RendezVous, RendezVousAdmin)
+super_admin_site.register(Evaluation, EvaluationAdmin)
+super_admin_site.register(ProfilPatient, ProfilPatientAdmin)
 
 
 
