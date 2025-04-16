@@ -8,9 +8,9 @@ from django.http import HttpResponseRedirect
 
 admin_site = admin.AdminSite(name='admin_personnalise')
 
-admin.site.site_header = "PsyOrthoTrack"
+# admin.site.site_header = "PsyOrthoTrack"
 
-@admin.register(ProfilPatient)
+# @admin.register(ProfilPatient)
 class ProfilPatientAdmin(admin.ModelAdmin):
     list_display = ('nom', 'prenom', 'date_naissance', 'age' ,'genre',  'cree_le',"view_medical_records_button", "export_medical_records_button")
     list_filter = ('genre', 'cree_le')
@@ -81,6 +81,18 @@ class ProfilPatientAdmin(admin.ModelAdmin):
     def add_view(self, request, form_url='', extra_context=None):
         return HttpResponseRedirect(reverse('ajouter_patient'))
     
-# @admin.register("Medcin")
-# class MedcinAdmin(admin.ModelAdmin):
-#     list_display = ('nom', 'prenom')
+    def has_module_permission(self, request):
+        return True  # Permet d'afficher l'application dans l'admin
+
+    def has_view_permission(self, request, obj=None):
+        return True  # Permet de voir les objets
+
+    def has_add_permission(self, request):
+        return True  # Permet d'ajouter de nouveaux objets
+
+    def has_change_permission(self, request, obj=None):
+        return True  # Permet de modifier les objets existants
+
+    def has_delete_permission(self, request, obj=None):
+        return True  # Permet de supprimer les objets
+

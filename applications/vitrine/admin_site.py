@@ -1,6 +1,7 @@
 from django.contrib import admin
+from django.db import models
 from django import forms
-from django.contrib.admin import AdminSite
+from django.contrib.admin import AdminSite,  ModelAdmin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
@@ -14,8 +15,11 @@ from applications.patients_docs.models import ProfilPatient
 from applications.patients_docs.admin import ProfilPatientAdmin
 
 from applications.vitrine.models import CustomUser, Cabinet
+from django.utils.html import format_html
+from django.urls import reverse
 # from applications.vitrine.models import CustomUser, Cabinet, Paiement, Offre
 # 👇 Personnalisation du CustomUserAdmin
+
 class CustomUserCreationForm(UserCreationForm):
     is_active = forms.BooleanField(required=False, initial=True, label="Actif")
 
@@ -27,6 +31,11 @@ class CustomUserChangeForm(UserChangeForm):
     class Meta:
         model = CustomUser
         fields = '__all__'
+
+class CustomUserInline(admin.TabularInline):  # ou StackedInline
+    model = CustomUser
+    extra = 1
+    fields = ('username', 'email', 'nom_medecin', 'prenom_medecin', 'telephone_perso', 'role', 'is_active')
 
 class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
@@ -52,14 +61,37 @@ class CustomUserAdmin(UserAdmin):
 
     search_fields = ('username', 'email', 'nom_medecin', 'prenom_medecin')
     ordering = ('username',)
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        if request.user.role == 'client':
+            return queryset.filter(models.Q(pk=request.user.pk) | models.Q(added_by=request.user))
+        return queryset
+
+    def save_model(self, request, obj, form, change):
+        if not obj.pk:
+            obj.added_by = request.user
+            obj.cabinet = request.user.cabinet
+        super().save_model(request, obj, form, change)
+
+    def has_module_permission(self, request):
+        return True  # Permet d'afficher l'application dans l'admin
+
+    def has_view_permission(self, request, obj=None):
+        return True  # Permet de voir les objets
+
+    def has_add_permission(self, request):
+        return True  # Permet d'ajouter de nouveaux objets
+
+    def has_change_permission(self, request, obj=None):
+        return True  # Permet de modifier les objets existants
+
+    def has_delete_permission(self, request, obj=None):
+        return True  # Permet de supprimer les objets
+
 
 
 # Interface Cabinet Admin
 
-class CustomUserInline(admin.TabularInline):  # ou StackedInline
-    model = CustomUser
-    extra = 1
-    fields = ('username', 'email', 'nom_medecin', 'prenom_medecin', 'telephone_perso', 'role', 'is_active')
 class CabinetAdmin(admin.ModelAdmin):
     list_display = ('name', 'ville', 'telephone', 'mail', 'medecin_nom', 'medecin_prenom', 'medecin_telephone', 'created_at')
     inlines = [CustomUserInline]
@@ -85,8 +117,7 @@ class CabinetAdmin(admin.ModelAdmin):
         return medecin.telephone_perso if medecin else "—"
     medecin_telephone.short_description = "Téléphone Médecin"
 
-
-
+    
 
 
 # class PaiementAdmin(admin.ModelAdmin):
@@ -129,7 +160,21 @@ class CabinetAdmin(admin.ModelAdmin):
 
 # admin.site.register(Paiement, PaiementAdmin)
 # admin.site.register(Offre, OfferAdmin)
+class AlwaysVisibleAdmin(admin.ModelAdmin):
+    def has_module_permission(self, request):
+        return True  # Permet d'afficher l'application dans l'admin
 
+    def has_view_permission(self, request, obj=None):
+        return True  # Permet de voir les objets
+
+    def has_add_permission(self, request):
+        return True  # Permet d'ajouter de nouveaux objets
+
+    def has_change_permission(self, request, obj=None):
+        return True  # Permet de modifier les objets existants
+
+    def has_delete_permission(self, request, obj=None):
+        return True  # Permet de supprimer les objets
 
 
 class CabinetAdminSite(AdminSite):
@@ -138,19 +183,24 @@ class CabinetAdminSite(AdminSite):
     index_title = "Dashboard Directeur de Cabinet"
 
     def has_permission(self, request):
+        debug_info = f"is_active: {request.user.is_active}, is_authenticated: {request.user.is_authenticated}, role: {getattr(request.user, 'role', None)}"
+        print("CabinetAdminSite.has_permission()", debug_info)
         return request.user.is_active and request.user.is_authenticated and request.user.role == 'client'
-
+    
+    def each_context(self, request):
+        context = super().each_context(request)
+        context['registered_apps'] = list(self._registry.keys())
+        return context
 
 cabinet_admin_site = CabinetAdminSite(name='cabinetadmin')
 
-# Enregistre les modèles nécessaires dans le cabinet_admin_site
 cabinet_admin_site.register(CustomUser, CustomUserAdmin)
+
 cabinet_admin_site.register(RendezVous, RendezVousAdmin)
 cabinet_admin_site.register(Evaluation, EvaluationAdmin)
 cabinet_admin_site.register(ProfilPatient, ProfilPatientAdmin)
-cabinet_admin_site.register(Cabinet, CabinetAdmin) 
-print("📋 Modèles enregistrés dans cabinet_admin_site :", list(cabinet_admin_site._registry.keys()))
 
+# print("📋 Modèles enregistrés dans cabinet_admin_site :", list(cabinet_admin_site._registry.keys()))
 
 
 # Interface SuperAdmin
@@ -164,11 +214,10 @@ class SuperAdminSite(AdminSite):
 
 
 super_admin_site = SuperAdminSite(name='superadmin')
+
 super_admin_site.register(CustomUser, CustomUserAdmin)  
 super_admin_site.register(Cabinet, CabinetAdmin)
-super_admin_site.register(RendezVous, RendezVousAdmin)
-super_admin_site.register(Evaluation, EvaluationAdmin)
-super_admin_site.register(ProfilPatient, ProfilPatientAdmin)
+
 
 
 

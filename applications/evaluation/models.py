@@ -3,6 +3,7 @@ from django.utils import timezone
 
 class Evaluation(models.Model):
     prenom = models.CharField(max_length=255, blank=True, null=True)
+
     nom = models.CharField(max_length=255, blank=True, null=True)
     titre = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
@@ -13,7 +14,7 @@ class Evaluation(models.Model):
     score4 = models.IntegerField(blank=True, null=True)
 
     class Meta:
-        unique_together = ('nom', 'prenom')  # Empêche les doublons exacts
+        unique_together = ('nom', 'prenom')
         ordering = ['nom', 'prenom']
         verbose_name = "Evaluations"
         verbose_name_plural = "Evaluations"

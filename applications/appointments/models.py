@@ -31,7 +31,7 @@ class RendezVous(models.Model):
 
     teleconsultation = models.BooleanField("Téléconsultation ?", default=False)
 
-    prix = models.DecimalField("Prix (€)", max_digits=6, decimal_places=2, null=True, blank=True)
+    prix = models.DecimalField("Prix (Dz)", max_digits=6, decimal_places=2, null=True, blank=True)
     est_paye = models.BooleanField("Payé ?", default=False)
 
     cree_le = models.DateTimeField("Créé le", default=timezone.now, blank=True, null=True)  # Créé le

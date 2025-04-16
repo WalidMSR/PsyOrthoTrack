@@ -25,3 +25,19 @@ class RendezVousAdmin(admin.ModelAdmin):
         }),
     )
 
+    def has_module_permission(self, request):
+        return True  # Permet d'afficher l'application dans l'admin
+
+    def has_view_permission(self, request, obj=None):
+        return True  # Permet de voir les objets
+
+    def has_add_permission(self, request):
+        return True  # Permet d'ajouter de nouveaux objets
+
+    def has_change_permission(self, request, obj=None):
+        return True  # Permet de modifier les objets existants
+
+    def has_delete_permission(self, request, obj=None):
+        return True  # Permet de supprimer les objets
+
+

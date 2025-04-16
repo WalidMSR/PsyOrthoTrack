@@ -78,8 +78,13 @@ class CustomUser(AbstractUser):
     
     role = models.CharField(max_length=20, choices=ROLE_CHOICES)
     cabinet = models.ForeignKey(Cabinet, on_delete=models.SET_NULL, null=True, blank=True)
+    
+    added_by = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True)
 
     # is_active = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.username} ({self.role})"
+    
+
+    

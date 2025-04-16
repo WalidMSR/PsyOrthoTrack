@@ -10,7 +10,7 @@ from django.http import HttpResponseRedirect
 class EvaluationAdmin(admin.ModelAdmin):
     list_display = ('nom', 'prenom' , 'titre', 'date_de_creation_dossier', 'view_medical_records_button', 'export_medical_records_button')
     search_fields =  ('nom', 'prenom')
-
+    
 
 
     
@@ -33,3 +33,17 @@ class EvaluationAdmin(admin.ModelAdmin):
         return HttpResponseRedirect(reverse('ajouter_eval'))
     
     
+    def has_module_permission(self, request):
+        return True  # Permet d'afficher l'application dans l'admin
+
+    def has_view_permission(self, request, obj=None):
+        return True  # Permet de voir les objets
+
+    def has_add_permission(self, request):
+        return True  # Permet d'ajouter de nouveaux objets
+
+    def has_change_permission(self, request, obj=None):
+        return True  # Permet de modifier les objets existants
+
+    def has_delete_permission(self, request, obj=None):
+        return True  # Permet de supprimer les objets

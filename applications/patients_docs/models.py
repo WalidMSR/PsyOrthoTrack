@@ -16,7 +16,7 @@ class ProfilPatient(models.Model):
         return today.year - self.date_naissance.year
 
     prenom = models.CharField("Prénom", max_length=100, blank=True, null=True )
-    nom = models.CharField("Nom", max_length=100, blank=True, null=True )
+    nom = models.CharField("Nom", max_length=100)
     date_naissance = models.DateField("Date de naissance") 
     lieu_naissance = models.CharField("Lieu de naissance",max_length=50, blank=True, null=True )
  
@@ -221,4 +221,4 @@ class ProfilPatient(models.Model):
     
     def __str__(self):
         return f"{self.prenom} {self.nom} - {self.date_naissance}"
-
+        
